@@ -1,6 +1,8 @@
 <template>
 <div v-if="counter > 0"> {{counter}}</div>
-<div v-for="score in liveScoreTable ">{{score.name}}</div>
+
+<div v-for="(horse,index) in liveScore " :key="index"> #{{index + 1}} {{horse.name}} </div>
+
 <hr>
 
   
@@ -29,6 +31,7 @@ let scoreboard = ref([]);
 let interval = ref();
 const counter = ref()
 const horses = ref(structuredClone(data));
+const liveScoreTable = ref([])
 
 const startCountdown = (seconds) => {
   counter.value = seconds; 
@@ -52,25 +55,29 @@ const start =  () => {
       interval.value = 0;
       
     } 
-    horses.value.forEach(function (value, index) {
+    horses.value.forEach((value, index) => {
 
       if (!value.hasOwnProperty('finished_at')) horseDistanceIncreaser(index);
     });
-    
-    liveScore()
-  }, 1000),3000)
+
+  }, 2000),3000)
 }
 
-const liveScoreTable = ref([])
-const liveScore = ()=> {
+const liveScore = computed( () => {
     let n = horses.value.filter(c => !c.hasOwnProperty("score")).sort((a, b) => b.distance-a.distance)
     for (let i = 0, c=0; i < horses.value.length; i++){
-        if (!horses.value[i].hasOwnProperty("score")  ){
+        if (!horses.value[i].hasOwnProperty("score") && scoreboard.value.length < 1  ){
            liveScoreTable.value[i] = n[c++];
         } 
-    }
-}
-liveScore()
+    if(scoreboard.value.length > 0){
+        for(let j = 0; j < scoreboard.value.length; j ++){
+            liveScoreTable.value[j] = scoreboard.value[j]
+          }
+        }
+        } 
+    
+    return liveScoreTable.value
+})
 
 
 const restart = () => {
