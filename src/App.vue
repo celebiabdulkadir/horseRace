@@ -1,23 +1,18 @@
 <template>
-<div v-if="counter > 0"> {{counter}}</div>
 
-<div v-for="(horse,index) in liveScore " :key="index"> #{{index + 1}} {{horse.name}} </div>
+  <CountDown v-if="counter > 0" :counter="counter"> </CountDown>
 
-<hr>
+  <ResultTable :liveScore="liveScore" >  </ResultTable>
 
-  
-  <div v-for="(horse,index) in scoreboard" :key="index"  > <span>{{ horse.name }} #{{ index + 1 }} </span></div>
-  <hr>
-  <!-- <div v-for="(horse, index) in horses" :key="index">{{horse.name}}---#{{index + 1}}</div> -->
+  <br>
+  <div v-if="scoreboard.length >7">
+  <WinnerComp  :liveScore="liveScore"> </WinnerComp>
+  <ButtonComp class="secondary" @start="restart" title="restart"></ButtonComp >
+  </div>
+
   <section>
-    <ul >
-      <li v-for="(horse, index) in horses" :key="index" :style="{ 'color': horse.color }">
-        <span>{{ horse.name }}  </span>
-        <i :style="{ 'background-color': horse.color, 'left': horse.distance > 100 ? 100 + '%' : horse.distance + '%' }"  >  </i>
-      </li>
-    </ul>
-    <button class="primary" @click="start" :disabled="interval || scoreboard.length === horses.length">Start</button>
-    <button class="secondary" @click="restart">Restart</button>
+    <RacePitch :horses ="horses"></RacePitch>
+    <ButtonComp class="primary" @start="start" :disabled="interval || scoreboard.length === horses.length" title="start"></ButtonComp>
   </section>
 </template>
 
@@ -25,7 +20,11 @@
 import { ref, computed } from "vue"
 import data from "@/assets/data.json"
 import getRandomNumber from "@/composables/useRandom"
-import Horse from "@/components/Horse.vue"
+import CountDown from "@/components/BackCount.vue"
+import RacePitch from "@/components/RacePitch.vue"
+import ButtonComp from "@/components/ButtonComp.vue"
+import ResultTable from "@/components/ResultTable.vue"
+import WinnerComp from "@/components/WinnerComp.vue"
 const distance = 100;
 let scoreboard = ref([]);
 let interval = ref();

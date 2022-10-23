@@ -7,13 +7,34 @@ const startButtonHandler = () => {
 }
 </script>
 <template>
-<button @click="startButtonHandler" class="btn">{{props.title}}</button>
+
+<button @click="startButtonHandler" :class="{'primary': start,  'secondary': restart}" >{{props.title}}</button>
 </template>
 
 <style scoped>
-.btn{
-    border-radius: 25px;
-    margin-bottom: 20px;
+button{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  outline:none;
+  border:0;
+  padding: 10px 15px;
+  border-radius: 2px;
+  font-size: 15px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+button:hover{
+  opacity: 0.7;
+}
+
+button.primary{
+  background-color: #3498db;
+  color: white;
+}
+
+button.secondary{
+  background-color: #34495e;
+  color: white;
 }
 
 </style>
