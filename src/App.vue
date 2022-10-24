@@ -1,33 +1,16 @@
-<template>
-
-  <CountDown v-if="counter > 0" :counter="counter"> </CountDown>
-
-  <ResultTable :liveScore="liveScore" >  </ResultTable>
-
-  <br>
-  <div v-if="scoreboard.length >7">
-  <WinnerComp  :liveScore="liveScore"> </WinnerComp>
-  <ButtonComp class="secondary" @start="restart" title="restart"></ButtonComp >
-  </div>
-
-  <section>
-    <RacePitch :horses ="horses"></RacePitch>
-    <ButtonComp class="primary" @start="start" :disabled="interval || scoreboard.length === horses.length" title="start"></ButtonComp>
-  </section>
-</template>
-
 <script setup>
 import { ref, computed } from "vue"
 import data from "@/assets/data.json"
 import getRandomNumber from "@/composables/useRandom"
-import CountDown from "@/components/BackCount.vue"
-import RacePitch from "@/components/RacePitch.vue"
+import CountDownComp from "@/components/CountDownComp.vue"
+import RacePitchComp from "@/components/RacePitchComp.vue"
 import ButtonComp from "@/components/ButtonComp.vue"
-import ResultTable from "@/components/ResultTable.vue"
+import ResultTableComp from "@/components/ResultTableComp.vue"
 import WinnerComp from "@/components/WinnerComp.vue"
-const distance = 100;
-let scoreboard = ref([]);
-let interval = ref();
+import ResultScoreBoardComp from "./components/ResultScoreBoardComp.vue"
+const distance = 93;
+const scoreboard = ref([]);
+const interval = ref();
 const counter = ref()
 const horses = ref(structuredClone(data));
 const liveScoreTable = ref([])
@@ -35,11 +18,9 @@ const liveScoreTable = ref([])
 const startCountdown = (seconds) => {
   counter.value = seconds; 
   const interval2 = setInterval(() => {
-    console.log(counter.value);
     counter.value--;
       
     if (counter.value < 1 ) {
-      console.log("Start!!!");
       clearInterval(interval2);
     }
   }, 1000);
@@ -52,16 +33,13 @@ const start =  () => {
     if (scoreboard.value.length === horses.value.length){
       clearInterval(interval.value);
       interval.value = 0;
-      
     } 
     horses.value.forEach((value, index) => {
 
       if (!value.hasOwnProperty('finished_at')) horseDistanceIncreaser(index);
     });
-
-  }, 2000),3000)
+  }, 800),3000)
 }
-
 const liveScore = computed( () => {
     let n = horses.value.filter(c => !c.hasOwnProperty("score")).sort((a, b) => b.distance-a.distance)
     for (let i = 0, c=0; i < horses.value.length; i++){
@@ -78,7 +56,6 @@ const liveScore = computed( () => {
     return liveScoreTable.value
 })
 
-
 const restart = () => {
   scoreboard.value = [];
   
@@ -89,8 +66,6 @@ const restart = () => {
   
   start();
 }
-
-
 const horseDistanceIncreaser = (index) => {
   horses.value[index].distance += getRandomNumber();
   if (horses.value[index].distance > distance) {
@@ -105,11 +80,31 @@ const horseDistanceIncreaser = (index) => {
   }
   
 }
-
-
 </script>
 
-<style>
+<template>
+
+<CountDownComp v-if="counter > 0" :counter="counter"> </CountDownComp>
+  <section>
+
+  <div>
+    <ResultTableComp  :liveScore="liveScore" :scoreboard="scoreboard" ></ResultTableComp>
+</div>
+  <div v-if="scoreboard.length > 7">
+    <WinnerComp  :liveScore="liveScore"> </WinnerComp>
+    <ButtonComp class="secondary" @start="restart" title="restart"></ButtonComp >
+  </div>
+
+
+</section>
+  <br>
+
+  <section>
+    <RacePitchComp :horses ="horses"></RacePitchComp>
+    <ButtonComp class="primary" @start="start" :disabled="interval || scoreboard.length === horses.length" title="start"></ButtonComp>
+  </section>
+</template>
+<style >
 body,html {
   height: 100%;
 }
@@ -130,39 +125,7 @@ body > div section {
   text-align: center;
 }
 
-ul{
-  background-color:white;
-  display:table;
-  list-style:none;
-  padding:0 15px;
-  margin: 0 auto 20px auto;
-  width:500px;
-  box-shadow: rgb(108 105 108 / 20%) 0 2px 2px, rgb(108 105 108 / 20%) 0 4px 4px, rgb(108 105 108 / 20%) 0 8px 8px, rgb(108 105 108 / 20%) 0 16px 16px, rgb(108 105 108 / 20%) 0 32px 32px, rgb(108 105 108 / 20%) 0 64px 64px;
-}
 
-ul li{
-  position: relative;
-  border-bottom:1px dashed #dcdde1;
-  text-align: left;
-  padding: 10px 5px;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-weight: 500;
-}
-
-ul li span{
-  opacity: 0.3;
-  margin-left: 10px;
-}
-
-ul li i{
-  width: 10px;
-  height: 10px;
-  display:inline-table;
-  border-radius: 100%;
-  position:absolute;
-  top: 15px;
-  transition: all 0.3s;
-}
 
 button{
   font-family: Georgia, 'Times New Roman', Times, serif;

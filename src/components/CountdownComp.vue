@@ -1,11 +1,7 @@
 <script setup>
-
-
 </script>
 
 <template>
-
-
 <div class="demo">
   <div class="demo__colored-blocks">
     <div class="demo__colored-blocks-rotater">

@@ -1,10 +1,10 @@
 [
-  { "name": "Vue", "distance": 0, "color":"#3498db" },
-  { "name": "React", "distance": 0, "color":"#1abc9c" },
-  { "name": "Angular", "distance": 0, "color":"#2ecc71" },
-  { "name": "jQuery", "distance": 0, "color":"#9b59b6" },
-  { "name": "PHP", "distance": 0, "color":"#34495e" },
-  { "name": "ASP.net", "distance": 0, "color":"#f1c40f" },
-  { "name": "Python", "distance": 0, "color":"#e74c3c" },
-  { "name": "Java", "distance": 0, "color":"#273c75" }
+  { "name": "Vue", "distance": 0, "color":"#3498db","lane": 1 },
+  { "name": "React", "distance": 0, "color":"#f39c12","lane": 2 },
+  { "name": "Angular", "distance": 0, "color":"#2ecc71","lane": 3 },
+  { "name": "jQuery", "distance": 0, "color":"#9b59b6","lane": 4 },
+  { "name": "PHP", "distance": 0, "color":"#34495e","lane": 5 },
+  { "name": "ASP.net", "distance": 0, "color":"#f1c40f","lane": 6 },
+  { "name": "Python", "distance": 0, "color":"#e74c3c","lane": 7 },
+  { "name": "Java", "distance": 0, "color":"#273c75","lane": 8 }
 ]
