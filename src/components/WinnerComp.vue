@@ -1,9 +1,7 @@
 <script setup>
-
-const props = defineProps(['liveScore'])
+const props = defineProps(["liveScore"]);
 </script>
 
 <template>
-<div > <hr>The winner is  #{{props.liveScore[0].name}} <hr> </div>
-
+  <div>The winner is #{{ props.liveScore[0].name }}</div>
 </template>
