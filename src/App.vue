@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import data from "@/assets/data.json";
 import getRandomNumber from "@/composables/useRandom";
 import CountDownComp from "@/components/CountDownComp.vue";
@@ -7,28 +7,28 @@ import RacePitchComp from "@/components/RacePitchComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import ResultTableComp from "@/components/ResultTableComp.vue";
 import WinnerComp from "@/components/WinnerComp.vue";
-import ResultScoreBoardComp from "./components/ResultScoreBoardComp.vue";
-import RaceCompetitorComp from "./components/RaceCompetitorComp.vue";
-const distance = 110;
+import StartAreaComp from "@/components/StartAreaComp.vue";
+import FinishAreaComp from "@/components/FinishAreaComp.vue";
+
+const distance = 117;
 const scoreboard = ref([]);
 const interval = ref();
 const counter = ref();
 const horses = ref(structuredClone(data));
-const liveScoreTable = ref([]);
+const liveScore = ref(horses.value);
 const globalScorePool = ref(2000);
+const open = ref(false);
 
 const start = () => {
   counter.value = 3;
   const interval2 = setInterval(() => {
     counter.value--;
-    console.log(counter.value);
     if (counter.value < 1) {
       clearInterval(interval2);
       startRace();
     }
   }, 1000);
 };
-
 const startRace = () => {
   interval.value = setInterval(() => {
     if (scoreboard.value.length === horses.value.length) {
@@ -39,44 +39,16 @@ const startRace = () => {
       if (!value.hasOwnProperty("finished_at")) horseDistanceIncreaser(index);
     });
     sortHorses();
-  }, 10);
+  }, 20);
 };
 
 const sortHorses = () => {
   let horseScoreList = [...horses.value].sort(
     (horse1, horse2) => horse2.score - horse1.score
   );
-  // for (let i = 0; i < horses.value.length; i++){
-  //     if (!horses.value[i].hasOwnProperty("score") && scoreboard.value.length < 1  ){
-  //        liveScoreTable.value[i] = n[i];
-  //     }
-  // // if(scoreboard.value.length > 0){
-  // //     for(let j = 0; j < scoreboard.value.length; j ++){
-  // //         liveScoreTable.value[j] = scoreboard.value[j]
-  // //       }
-  // //     }
-  //     }
-  console.log(horses.value);
   liveScore.value = horseScoreList;
-};
-const liveScore = computed(() => {
-  let horseScoreList = [...horses.value].sort(
-    (horse1, horse2) => horse2.score - horse1.score
-  );
-  // for (let i = 0; i < horses.value.length; i++){
-  //     if (!horses.value[i].hasOwnProperty("score") && scoreboard.value.length < 1  ){
-  //        liveScoreTable.value[i] = n[i];
-  //     }
-  // // if(scoreboard.value.length > 0){
-  // //     for(let j = 0; j < scoreboard.value.length; j ++){
-  // //         liveScoreTable.value[j] = scoreboard.value[j]
-  // //       }
-  // //     }
-  //     }
-  console.log(horseScoreList);
   return horseScoreList;
-});
-
+};
 const restart = () => {
   scoreboard.value = [];
 
@@ -84,18 +56,17 @@ const restart = () => {
   interval.value = 0;
 
   horses.value = structuredClone(data);
-
+  liveScore.value = horses.value;
   start();
 };
 const horseDistanceIncreaser = (index) => {
   horses.value[index].distance += getRandomNumber();
-  horses.value[index].score = horses.value[index].distance; // scoreboard.value.length + 1;
+  horses.value[index].score = horses.value[index].distance;
   if (horses.value[index].distance > distance) {
     horses.value[index].score += globalScorePool.value;
     globalScorePool.value -= 110;
     horses.value[index].distance = distance;
     horses.value[index].finished_at = new Date().toGMTString();
-
     scoreboard.value.push(horses.value[index]);
   } else {
     horses.value[index].distance += getRandomNumber();
@@ -105,36 +76,46 @@ const horseDistanceIncreaser = (index) => {
 
 <template>
   <section>
+    <h1>HORSE RACING</h1>
+    <h3>HORSE RACE PITCH</h3>
     <div class="pitch">
       <CountDownComp v-if="counter > 0" :counter="counter"> </CountDownComp>
       <section>
         <div class="resultTableandWinner">
           <div class="resultTable">
-            <ResultTableComp
-              :liveScore="liveScore"
-              :scoreboard="scoreboard"
-            ></ResultTableComp>
+            <ResultTableComp :liveScore="liveScore"></ResultTableComp>
           </div>
           <div v-if="scoreboard.length > 7" class="restartScreen">
             <WinnerComp :liveScore="liveScore"> </WinnerComp>
-            <ButtonComp
+            <!-- <ButtonComp
               class="secondary"
               @start="restart"
               title="restart"
-            ></ButtonComp>
+            ></ButtonComp> -->
           </div>
         </div>
       </section>
       <br />
-      <RaceCompetitorComp :horses="horses"></RaceCompetitorComp>
+      <StartAreaComp :horses="horses"></StartAreaComp>
       <RacePitchComp :horses="horses"></RacePitchComp>
+      <FinishAreaComp :horses="horses"></FinishAreaComp>
     </div>
-    <ButtonComp
-      class="primary"
-      @start="start"
-      :disabled="interval || scoreboard.length === horses.length"
-      title="start"
-    ></ButtonComp>
+
+    <div v-if="scoreboard.length > 7">
+      <ButtonComp
+        class="secondary"
+        @start="restart"
+        title="restart"
+      ></ButtonComp>
+    </div>
+    <div v-else>
+      <ButtonComp
+        class="primary"
+        @start="start"
+        :disabled="interval || scoreboard.length === horses.length"
+        title="start"
+      ></ButtonComp>
+    </div>
   </section>
 </template>
 <style>
@@ -145,6 +126,7 @@ html {
 
 body {
   background-color: #f5f6fa;
+  font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 body > div {
@@ -167,16 +149,15 @@ body > div section {
   align-content: space-between;
 }
 .resultTable {
-  padding-right: 100px;
+  padding-right: 50px;
   padding-left: 20px;
 }
 
 button {
-  font-family: Georgia, "Times New Roman", Times, serif;
   outline: none;
   border: 0;
   padding: 10px 15px;
-  border-radius: 2px;
+  border-radius: 25px;
   font-size: 15px;
   margin: 5px;
   cursor: pointer;
@@ -189,12 +170,24 @@ button:hover {
 button.primary {
   background-color: #3498db;
   color: white;
-  margin-left: 500px;
+  position: absolute;
+
+  width: 80px;
+  height: 50px;
+  font-size: 25px;
+  border-radius: 25px;
+  right: 500px;
 }
 
 button.secondary {
   background-color: #34495e;
+  position: absolute;
   color: white;
+  width: 100px;
+  height: 50px;
+  font-size: 25px;
+  border-radius: 25px;
+  right: 500px;
 }
 .restartScreen {
   display: flex;
@@ -205,5 +198,8 @@ button.secondary {
   display: table;
   align-items: column;
   justify-content: center;
+}
+.modal {
+  background-color: red;
 }
 </style>

@@ -10,16 +10,14 @@ const props = defineProps(["horses"]);
         :key="index"
         :style="{ color: horse.color }"
       >
-        <!-- <span  > 
-                
-                 Lane -{{index + 1 }} #{{ horse.name }}  </span> -->
+        <!-- <span> Lane -{{ index + 1 }} #{{ horse.name }} </span> -->
         <span
           class="horse"
           :style="{
-            left: horse.distance > 110 ? 110 + '%' : horse.distance + '%',
+            left: horse.distance > 117 ? 117 + '%' : horse.distance + '%',
           }"
-          ><HorseComp :color="horse.color"> </HorseComp
-        ></span>
+          ><HorseComp :color="horse.color"> </HorseComp>
+        </span>
       </li>
     </ul>
   </div>
@@ -45,10 +43,9 @@ ul {
   background-color: rgb(95, 168, 95);
   display: table;
   list-style: none;
-  border-right: 10px solid black;
-  border-left: 10px solid black;
+
   padding: 0 0px;
-  margin: 66px 50px auto 0px;
+  margin: 66px 0px auto 0px;
   width: 750px;
   /* opacity: 0.8; */
   box-shadow: rgb(108 105 108 / 20%) 0 2px 2px, rgb(108 105 108 / 20%) 0 4px 4px,
@@ -74,7 +71,7 @@ ul li span {
   width: 50px;
   height: 50px;
   display: inline-table;
-  margin-left: -65px;
+  margin-left: -90px;
   position: absolute;
   top: 15px;
   transition: all 0.3s;
