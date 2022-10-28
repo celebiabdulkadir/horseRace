@@ -62,7 +62,6 @@ const restartHandler = () => {
   border-radius: 5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-  font-family: Georgia, "Times New Roman", Times, serif;
 }
 .modal-footer {
   border-radius: 10px;

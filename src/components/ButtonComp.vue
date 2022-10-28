@@ -17,7 +17,6 @@ const startButtonHandler = () => {
 
 <style scoped>
 button {
-  font-family: Georgia, "Times New Roman", Times, serif;
   outline: none;
   border: 0;
   padding: 10px 15px;

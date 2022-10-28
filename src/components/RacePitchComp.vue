@@ -36,7 +36,6 @@ ul li {
   border-bottom: 1px dashed #dcdde1;
   text-align: left;
   padding: 10px 5px;
-  font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: 500;
   height: 35.2px;
 }

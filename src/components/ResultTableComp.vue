@@ -84,7 +84,6 @@ table {
 
 table tr {
   border-bottom: 1px solid #dcdde1;
-  font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: 500;
   text-align: center;
   justify-content: center;

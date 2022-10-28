@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-import data from "@/assets/data.json"; //
+import data from "@/assets/data.json";
 import getRandomNumber from "@/composables/useRandom"; // getRandomNumber function is called from useRandom file. This Function generates random number between specific interval
 import CountDownComp from "@/components/CountDownComp.vue";
 import RacePitchComp from "@/components/RacePitchComp.vue";
@@ -12,7 +12,7 @@ import ResultPopupComp from "@/components/ResultPopupComp.vue";
 import HorseComp from "@/components/HorseComp.vue";
 const show = ref(false);
 const distance = 118;
-const interval = ref(); // variable of setInterval Funtion
+const interval = ref(); // variable of setInterval Function
 const counter = ref();
 const horses = ref(structuredClone(data));
 const liveScore = ref(horses.value);
@@ -36,6 +36,7 @@ const startRace = () => {
   interval.value = setInterval(() => {
     // (1057 = (Initial globalScoreValue = 2000) - 8 * (distance = 118) + 1 )
     if (globalScorePool.value < 1057) {
+      // 1057 yerine variable atanacak.
       show.value = true;
       clearInterval(interval.value);
       interval.value = 0;
