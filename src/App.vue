@@ -6,10 +6,11 @@ import CountDownComp from "@/components/CountDownComp.vue";
 import RacePitchComp from "@/components/RacePitchComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import ResultTableComp from "@/components/ResultTableComp.vue";
-import WinnerComp from "@/components/WinnerComp.vue";
 import StartAreaComp from "@/components/StartAreaComp.vue";
 import FinishAreaComp from "@/components/FinishAreaComp.vue";
-
+import ResultPopupComp from "@/components/ResultPopupComp.vue";
+import HorseComp from "@/components/HorseComp.vue";
+const show = ref(false);
 const distance = 117;
 const scoreboard = ref([]);
 const interval = ref();
@@ -17,8 +18,10 @@ const counter = ref();
 const horses = ref(structuredClone(data));
 const liveScore = ref(horses.value);
 const globalScorePool = ref(2000);
-const open = ref(false);
 
+const close = () => {
+  show.value = false;
+};
 const start = () => {
   counter.value = 3;
   const interval2 = setInterval(() => {
@@ -35,6 +38,10 @@ const startRace = () => {
       clearInterval(interval.value);
       interval.value = 0;
     }
+    if (globalScorePool.value < 1065) {
+      console.log("showtrue");
+      show.value = true;
+    }
     horses.value.forEach((value, index) => {
       if (!value.hasOwnProperty("finished_at")) horseDistanceIncreaser(index);
     });
@@ -50,6 +57,7 @@ const sortHorses = () => {
   return horseScoreList;
 };
 const restart = () => {
+  show.value = false;
   scoreboard.value = [];
 
   clearInterval(interval.value);
@@ -57,6 +65,8 @@ const restart = () => {
 
   horses.value = structuredClone(data);
   liveScore.value = horses.value;
+  globalScorePool.value = 2000;
+
   start();
 };
 const horseDistanceIncreaser = (index) => {
@@ -64,7 +74,8 @@ const horseDistanceIncreaser = (index) => {
   horses.value[index].score = horses.value[index].distance;
   if (horses.value[index].distance > distance) {
     horses.value[index].score += globalScorePool.value;
-    globalScorePool.value -= 110;
+    globalScorePool.value -= 117;
+    console.log(globalScorePool.value);
     horses.value[index].distance = distance;
     horses.value[index].finished_at = new Date().toGMTString();
     scoreboard.value.push(horses.value[index]);
@@ -76,8 +87,36 @@ const horseDistanceIncreaser = (index) => {
 
 <template>
   <section>
-    <h1>HORSE RACING</h1>
-    <h3>HORSE RACE PITCH</h3>
+    <div class="topHeader">
+      <div class="header">
+        <HorseComp class="header__horseComp"></HorseComp>
+
+        <h1 class="header__title">HORSE RACING</h1>
+
+        <HorseComp
+          transform="scale(-1,1) translate(0,0)"
+          class="header__horseComp"
+        ></HorseComp>
+      </div>
+      <div class="header__button">
+        <div v-if="globalScorePool > 1065">
+          <ButtonComp
+            class="primary"
+            @start="start"
+            :disabled="interval || globalScorePool < 2000"
+            title="Start"
+          ></ButtonComp>
+        </div>
+        <div v-else>
+          <ButtonComp
+            class="secondary"
+            @start="restart"
+            title="Restart"
+          ></ButtonComp>
+        </div>
+      </div>
+    </div>
+
     <div class="pitch">
       <CountDownComp v-if="counter > 0" :counter="counter"> </CountDownComp>
       <section>
@@ -85,39 +124,22 @@ const horseDistanceIncreaser = (index) => {
           <div class="resultTable">
             <ResultTableComp :liveScore="liveScore"></ResultTableComp>
           </div>
-          <div v-if="scoreboard.length > 7" class="restartScreen">
-            <WinnerComp :liveScore="liveScore"> </WinnerComp>
-            <!-- <ButtonComp
-              class="secondary"
-              @start="restart"
-              title="restart"
-            ></ButtonComp> -->
-          </div>
         </div>
       </section>
-      <br />
       <StartAreaComp :horses="horses"></StartAreaComp>
       <RacePitchComp :horses="horses"></RacePitchComp>
       <FinishAreaComp :horses="horses"></FinishAreaComp>
     </div>
-
-    <div v-if="scoreboard.length > 7">
-      <ButtonComp
-        class="secondary"
-        @start="restart"
-        title="restart"
-      ></ButtonComp>
-    </div>
-    <div v-else>
-      <ButtonComp
-        class="primary"
-        @start="start"
-        :disabled="interval || scoreboard.length === horses.length"
-        title="start"
-      ></ButtonComp>
-    </div>
   </section>
+  <ResultPopupComp
+    @close="close"
+    @restart="restart"
+    :show="show"
+    :liveScore="liveScore"
+    :globalScorePool="globalScorePool"
+  ></ResultPopupComp>
 </template>
+
 <style>
 body,
 html {
@@ -125,8 +147,12 @@ html {
 }
 
 body {
-  background-color: #f5f6fa;
+  background-color: #ffffff;
   font-family: Georgia, "Times New Roman", Times, serif;
+  background-image: url("./assets/background.jpeg");
+  background-size: auto 820px;
+  background-repeat: repeat-x;
+  background-position: top center;
 }
 
 body > div {
@@ -149,8 +175,8 @@ body > div section {
   align-content: space-between;
 }
 .resultTable {
-  padding-right: 50px;
-  padding-left: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
 }
 
 button {
@@ -170,24 +196,22 @@ button:hover {
 button.primary {
   background-color: #3498db;
   color: white;
-  position: absolute;
+  position: relative;
 
   width: 80px;
   height: 50px;
   font-size: 25px;
-  border-radius: 25px;
-  right: 500px;
+  border-radius: 15px;
 }
 
 button.secondary {
   background-color: #34495e;
-  position: absolute;
+  position: relative;
   color: white;
   width: 100px;
   height: 50px;
   font-size: 25px;
-  border-radius: 25px;
-  right: 500px;
+  border-radius: 15px;
 }
 .restartScreen {
   display: flex;
@@ -199,7 +223,32 @@ button.secondary {
   align-items: column;
   justify-content: center;
 }
-.modal {
-  background-color: red;
+.topHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.header {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: center;
+  padding: 10px;
+}
+.header__horseComp {
+  opacity: 0.5;
+  padding: 10px;
+  max-width: 60px;
+}
+.header__title {
+  font-size: 35px;
+  position: relative;
+}
+.header_button {
+  position: relative;
 }
 </style>

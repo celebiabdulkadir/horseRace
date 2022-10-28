@@ -12,14 +12,16 @@ const props = defineProps(["horses"]);
         class="table__item"
         v-for="(horse, index) in props.horses"
         :key="index"
-      >
-        <!-- {{ index + 1 }} #{{ horse.name }} -->
-      </li>
+      ></li>
     </ul>
   </div>
 </template>
 
 <style scoped>
+ul {
+  margin: 0px;
+  padding: 0px;
+}
 .table__item {
   display: flex;
   justify-content: left;
@@ -37,9 +39,10 @@ const props = defineProps(["horses"]);
   display: flex;
   flex-direction: column;
   padding: 0px;
-  margin-top: 65px;
+  margin-top: 0px;
+  margin-right: 60px;
 
-  height: 570px;
+  height: 450px;
 
   text-align: center;
   justify-content: flex-start;
@@ -47,18 +50,17 @@ const props = defineProps(["horses"]);
   background-color: rgb(95, 168, 95);
 }
 .finishGate {
-  margin-top: 50px;
   display: flex;
   writing-mode: vertical-rl;
   text-orientation: upright;
   padding: 0px;
   width: 28px;
-  height: 570px;
+  height: 450px;
   text-align: center;
   justify-content: center;
   align-items: center;
   font-size: 20px;
-  margin-top: 65px;
+  margin-top: 0px;
   border-right: 5px solid black;
   border-right: 5px solid black;
   border-left: 5px solid black;

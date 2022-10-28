@@ -10,7 +10,8 @@ const props = defineProps(["horses"]);
         v-for="(horse, index) in props.horses"
         :key="index"
       >
-        {{ index + 1 }} #{{ horse.name }}
+        <span class="table__lane">{{ index + 1 }}</span>
+        <span class="table__horse">#{{ horse.name }}</span>
       </li>
     </ul>
   </div>
@@ -21,76 +22,67 @@ const props = defineProps(["horses"]);
 </template>
 
 <style scoped>
-.table__item {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  border-bottom: 1px dashed white;
-  padding-bottom: 50px;
-  padding-right: 40px;
-  margin-left: 0;
-  padding-left: 0;
-  height: 20px;
-}
-.startPoint {
+ul {
+  padding: 0;
+
+  margin: 0;
 }
 .table {
   display: flex;
-
-  padding: 0px;
-  margin-top: 65px;
-
-  height: 570px;
+  margin-left: 0px;
+  padding-left: 10px;
+  margin-top: 0px;
+  height: 450px;
   white-space: nowrap;
-
-  text-align: center;
+  text-align: left;
   justify-content: space-around;
   align-items: center;
   background-color: rgb(95, 168, 95);
+  border-radius: 5px;
 }
+.table__item {
+  border-bottom: 1px dashed white;
+  list-style-type: none !important;
+  padding-bottom: 49.2px;
+  padding-right: 55px;
+  margin-left: 0;
+  padding-left: 0;
+  height: 6px;
+}
+.table__lane {
+  padding-right: 5px;
+  font-size: 40px;
+  justify-content: center;
+  display: inline-block;
+  color: #fff;
+  opacity: 0.5;
+  text-align: center;
+
+  height: 100%;
+}
+.table__horse {
+  display: inline-block;
+  font-size: 20px;
+  color: #fff;
+  opacity: 0.5;
+  text-align: center;
+  height: 0%;
+}
+
 .startingGate {
-  margin-top: 50px;
   display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
   writing-mode: vertical-rl;
   text-orientation: upright;
   padding: 0px;
   width: 28px;
-  height: 570px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+  height: 450px;
   font-size: 20px;
-  margin-top: 65px;
-  border-right: 5px solid black;
+  margin-top: 0px;
   border-right: 5px solid black;
   border-left: 5px solid black;
   background-color: rgb(203, 72, 36);
 }
-
-table {
-  box-shadow: rgb(108 105 108 / 20%) 0 2px 2px, rgb(108 105 108 / 20%) 0 4px 4px,
-    rgb(108 105 108 / 20%) 0 8px 8px, rgb(108 105 108 / 20%) 0 16px 16px,
-    rgb(108 105 108 / 20%) 0 32px 32px, rgb(108 105 108 / 20%) 0 64px 64px;
-}
-
-table td {
-  position: flex;
-
-  border-bottom: 1px dashed black;
-  border-left: 1px dashed black;
-  border-collapse: collapse;
-
-  text-align: center;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-weight: 500;
-  height: 65px;
-  padding-right: 60px;
-  align-items: center;
-  /* background-color: rgb(95, 168, 95); */
-  opacity: 0.8;
-}
-
-/* table tr:nth-child(1) td {
-  border-left: none;
-} */
 </style>
