@@ -38,7 +38,8 @@ ul {
   justify-content: space-around;
   align-items: center;
   background-color: rgb(95, 168, 95);
-  border-radius: 5px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 .table__item {
   border-bottom: 1px dashed white;
@@ -79,7 +80,7 @@ ul {
   padding: 0px;
   width: 28px;
   height: 450px;
-  font-size: 20px;
+  /* font-size: 19px; */
   margin-top: 0px;
   border-right: 5px solid black;
   border-left: 5px solid black;

@@ -1,60 +1,70 @@
-<script setup>
-</script>
+<script setup></script>
 
 <template>
-<div class="demo">
-  <div class="demo__colored-blocks">
-    <div class="demo__colored-blocks-rotater">
-      <div class="demo__colored-block"></div>
-      <div class="demo__colored-block"></div>
-      <div class="demo__colored-block"></div>
+  <div class="demo">
+    <div class="demo__colored-blocks">
+      <div class="demo__colored-blocks-rotater">
+        <div class="demo__colored-block"></div>
+        <div class="demo__colored-block"></div>
+        <div class="demo__colored-block"></div>
+      </div>
+      <div class="demo__colored-blocks-inner"></div>
+      <div class="demo__text">Ready</div>
     </div>
-    <div class="demo__colored-blocks-inner"></div>
-    <div class="demo__text">Ready</div>
-  </div>
-  <div class="demo__inner">
-    <svg class="demo__numbers" viewBox="0 0 100 100">
-      <defs>
-        <path class="demo__num-path-1" d="M40,28 55,22 55,78"/>
-        <path class="demo__num-join-1-2" d="M55,78 55,83 a17,17 0 1,0 34,0 a20,10 0 0,0 -20,-10"/>
-        <path class="demo__num-path-2" d="M69,73 l-35,0 l30,-30 a16,16 0 0,0 -22.6,-22.6 l-7,7"/>
-        <path class="demo__num-join-2-3" d="M28,69 Q25,44 34.4,27.4"/>
-        <path class="demo__num-path-3" d="M30,20 60,20 40,50 a18,15 0 1,1 -12,19"/>
-      </defs>
-      <path class="demo__numbers-path" 
-            d="M-10,20 60,20 40,50 a18,15 0 1,1 -12,19 
+    <div class="demo__inner">
+      <svg class="demo__numbers" viewBox="0 0 100 100">
+        <defs>
+          <path class="demo__num-path-1" d="M40,28 55,22 55,78" />
+          <path
+            class="demo__num-join-1-2"
+            d="M55,78 55,83 a17,17 0 1,0 34,0 a20,10 0 0,0 -20,-10"
+          />
+          <path
+            class="demo__num-path-2"
+            d="M69,73 l-35,0 l30,-30 a16,16 0 0,0 -22.6,-22.6 l-7,7"
+          />
+          <path class="demo__num-join-2-3" d="M28,69 Q25,44 34.4,27.4" />
+          <path
+            class="demo__num-path-3"
+            d="M30,20 60,20 40,50 a18,15 0 1,1 -12,19"
+          />
+        </defs>
+        <path
+          class="demo__numbers-path"
+          d="M-10,20 60,20 40,50 a18,15 0 1,1 -12,19 
                Q25,44 34.4,27.4
                l7,-7 a16,16 0 0,1 22.6,22.6 l-30,30 l35,0 L69,73 
                a20,10 0 0,1 20,10 a17,17 0 0,1 -34,0 L55,83 
-               l0,-61 L40,28" />
-    </svg>
+               l0,-61 L40,28"
+        />
+      </svg>
+    </div>
   </div>
-</div>
 </template>
 
 <style scoped lang="scss">
-
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-$bgColor: #32386D;
+$bgColor: #32386d;
 
 $numOfColBlocks: 3; // must be higher than 2
 $deg: 360deg / $numOfColBlocks;
 
-$red: #FD3359;
-$yellow: #F4D302;
-$blue: #21BDFF;
+$red: #fd3359;
+$yellow: #f4d302;
+$blue: #21bdff;
 
 $blocksColors: (
   1: $red,
   2: $yellow,
-  3: $blue
+  3: $blue,
 );
-
 
 $size: 140px;
 $sizeBig: 500px;
@@ -70,7 +80,8 @@ $numJoin1-2: 82.63925170898438;
 $numJoin2-3: 42.81303787231445;
 $numJoin3-0: 40;
 
-$totalLen: $num1Len + $num2Len + $num3Len + $numJoin1-2 + $numJoin2-3 + $numJoin3-0;
+$totalLen: $num1Len + $num2Len + $num3Len + $numJoin1-2 + $numJoin2-3 +
+  $numJoin3-0;
 
 body {
   background: $bgColor;
@@ -99,7 +110,8 @@ body {
     padding: $pad;
     border-radius: $contBr;
     perspective: 1000px;
-    animation: demoAnim $totalAT ease-in-out infinite, contAnim $totalAT infinite;
+    animation: demoAnim $totalAT ease-in-out infinite,
+      contAnim $totalAT infinite;
 
     &-rotater {
       position: absolute;
@@ -187,11 +199,13 @@ body {
 }
 
 @keyframes contAnim {
-  15%, 100% {
+  15%,
+  100% {
     margin-left: $sizeBig/-2;
     width: $sizeBig;
   }
-  25%, 90% {
+  25%,
+  90% {
     margin-left: $size/-2;
     width: $size;
   }
@@ -203,12 +217,14 @@ body {
     stroke-dashoffset: 0;
     opacity: 0;
   }
-  25%, 41% {
+  25%,
+  41% {
     opacity: 1;
     stroke-dasharray: $num3Len, $totalLen;
     stroke-dashoffset: -$numJoin3-0;
   }
-  53%, 66% {
+  53%,
+  66% {
     stroke-dasharray: $num2Len, $totalLen;
     stroke-dashoffset: -$num3Len - $numJoin2-3 -$numJoin3-0;
   }
@@ -216,7 +232,8 @@ body {
     stroke-dasharray: $num1Len + $numJoin1-2/2, $totalLen;
     stroke-dashoffset: -$num3Len - $numJoin2-3 - $num2Len - $numJoin1-2 -$numJoin3-0;
   }
-  88%, 100% {
+  88%,
+  100% {
     stroke-dasharray: $num1Len, $totalLen;
     stroke-dashoffset: -$num3Len - $numJoin2-3 - $num2Len - $numJoin1-2 -$numJoin3-0;
   }
@@ -226,7 +243,6 @@ body {
   100% {
     opacity: 0;
   }
-
 }
 
 @keyframes rotation {
@@ -240,21 +256,24 @@ body {
     border-radius: $contBr;
     transform: rotate(0);
   }
-  30%, 43% {
+  30%,
+  43% {
     border-radius: 50%;
     transform: rotate(360deg);
   }
 
-  52%, 65% {
+  52%,
+  65% {
     border-radius: 0;
     transform: rotate(720deg);
   }
 
-  78%, 90% {
+  78%,
+  90% {
     border-radius: 50%;
     transform: rotate(1080deg);
   }
-  
+
   100% {
     border-radius: $contBr;
     transform: rotate(1440deg);
@@ -262,10 +281,12 @@ body {
 }
 
 @keyframes hideText {
-  15%, 100% {
+  15%,
+  100% {
     opacity: 1;
   }
-  20%, 96% {
+  20%,
+  96% {
     opacity: 0;
   }
 }

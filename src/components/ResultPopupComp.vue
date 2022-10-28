@@ -54,8 +54,8 @@ const restartHandler = () => {
 }
 
 .modal-container {
-  height: 620px;
-  width: 600px;
+  max-height: 620px;
+  max-width: 600px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -65,11 +65,13 @@ const restartHandler = () => {
   font-family: Georgia, "Times New Roman", Times, serif;
 }
 .modal-footer {
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .closeIcon {
+  border-radius: 10px;
   display: flex;
   align-items: flex-end;
   justify-content: right;
@@ -81,7 +83,7 @@ const restartHandler = () => {
 }
 
 .modal-body {
-  margin: 20px 0;
+  /* margin: 20px 0; */
 }
 
 .modal-default-button {

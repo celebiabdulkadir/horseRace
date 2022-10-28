@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
-import data from "@/assets/data.json";
-import getRandomNumber from "@/composables/useRandom";
+import data from "@/assets/data.json"; //
+import getRandomNumber from "@/composables/useRandom"; // getRandomNumber function is called from useRandom file. This Function generates random number between specific interval
 import CountDownComp from "@/components/CountDownComp.vue";
 import RacePitchComp from "@/components/RacePitchComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
@@ -11,9 +11,8 @@ import FinishAreaComp from "@/components/FinishAreaComp.vue";
 import ResultPopupComp from "@/components/ResultPopupComp.vue";
 import HorseComp from "@/components/HorseComp.vue";
 const show = ref(false);
-const distance = 117;
-const scoreboard = ref([]);
-const interval = ref();
+const distance = 118;
+const interval = ref(); // variable of setInterval Funtion
 const counter = ref();
 const horses = ref(structuredClone(data));
 const liveScore = ref(horses.value);
@@ -32,23 +31,23 @@ const start = () => {
     }
   }, 1000);
 };
+// startRace set an interval in order to increase distance by random and implement race conditions
 const startRace = () => {
   interval.value = setInterval(() => {
-    if (scoreboard.value.length === horses.value.length) {
+    // (1057 = (Initial globalScoreValue = 2000) - 8 * (distance = 118) + 1 )
+    if (globalScorePool.value < 1057) {
+      show.value = true;
       clearInterval(interval.value);
       interval.value = 0;
-    }
-    if (globalScorePool.value < 1065) {
       console.log("showtrue");
-      show.value = true;
     }
-    horses.value.forEach((value, index) => {
-      if (!value.hasOwnProperty("finished_at")) horseDistanceIncreaser(index);
+    horses.value.forEach((item, index) => {
+      if (item.score < distance) horseDistanceIncreaser(index);
     });
     sortHorses();
   }, 20);
 };
-
+// Sorts horses by their score
 const sortHorses = () => {
   let horseScoreList = [...horses.value].sort(
     (horse1, horse2) => horse2.score - horse1.score
@@ -56,29 +55,26 @@ const sortHorses = () => {
   liveScore.value = horseScoreList;
   return horseScoreList;
 };
+// restart funtion restart the game
 const restart = () => {
   show.value = false;
-  scoreboard.value = [];
-
   clearInterval(interval.value);
   interval.value = 0;
-
   horses.value = structuredClone(data);
   liveScore.value = horses.value;
   globalScorePool.value = 2000;
 
   start();
 };
+//horseDistanceIncreaser function increases the distance by random
 const horseDistanceIncreaser = (index) => {
   horses.value[index].distance += getRandomNumber();
   horses.value[index].score = horses.value[index].distance;
   if (horses.value[index].distance > distance) {
     horses.value[index].score += globalScorePool.value;
-    globalScorePool.value -= 117;
+    globalScorePool.value -= distance;
     console.log(globalScorePool.value);
     horses.value[index].distance = distance;
-    horses.value[index].finished_at = new Date().toGMTString();
-    scoreboard.value.push(horses.value[index]);
   } else {
     horses.value[index].distance += getRandomNumber();
   }
@@ -87,43 +83,39 @@ const horseDistanceIncreaser = (index) => {
 
 <template>
   <section>
+    <!-- Header that shown at the top of screen -->
     <div class="topHeader">
       <div class="header">
-        <HorseComp class="header__horseComp"></HorseComp>
-
+        <HorseComp class="header__horseComp" :color="'#3d3d3d'"></HorseComp>
         <h1 class="header__title">HORSE RACING</h1>
-
-        <HorseComp
-          transform="scale(-1,1) translate(0,0)"
-          class="header__horseComp"
-        ></HorseComp>
+        <HorseComp :color="'#3d3d3d'" class="header__horseComp2"></HorseComp>
       </div>
       <div class="header__button">
-        <div v-if="globalScorePool > 1065">
+        <template v-if="globalScorePool > 1065">
           <ButtonComp
             class="primary"
             @start="start"
             :disabled="interval || globalScorePool < 2000"
             title="Start"
           ></ButtonComp>
-        </div>
-        <div v-else>
+        </template>
+        <template v-else>
           <ButtonComp
             class="secondary"
             @start="restart"
             title="Restart"
           ></ButtonComp>
-        </div>
+        </template>
       </div>
     </div>
-
-    <div class="pitch">
+    <!-- Race pitch whick includes starting area racepitch and finish area -->
+    <div class="pitchAndScore">
+      <!-- CountDown component runs before start for 3 seconds -->
       <CountDownComp v-if="counter > 0" :counter="counter"> </CountDownComp>
       <section>
-        <div class="resultTableandWinner">
-          <div class="resultTable">
-            <ResultTableComp :liveScore="liveScore"></ResultTableComp>
-          </div>
+        <div class="pitchAndScore_resultTable">
+          <!-- ResultTableComp shows result sorted by their score instantly on the left side of screen -->
+          <ResultTableComp :liveScore="liveScore"></ResultTableComp>
         </div>
       </section>
       <StartAreaComp :horses="horses"></StartAreaComp>
@@ -131,6 +123,7 @@ const horseDistanceIncreaser = (index) => {
       <FinishAreaComp :horses="horses"></FinishAreaComp>
     </div>
   </section>
+  <!-- Shows results on ResultPopupComp -->
   <ResultPopupComp
     @close="close"
     @restart="restart"
@@ -140,79 +133,18 @@ const horseDistanceIncreaser = (index) => {
   ></ResultPopupComp>
 </template>
 
-<style>
-body,
-html {
-  height: 100%;
-}
-
-body {
-  background-color: #ffffff;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  background-image: url("./assets/background.jpeg");
-  background-size: auto 820px;
-  background-repeat: repeat-x;
-  background-position: top center;
-}
-
-body > div {
-  width: 100%;
-  height: 100%;
-  display: table;
-}
-
-body > div section {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: center;
-}
-.pitch {
-  /* width: 100%;
-  height: 100%; */
+<style scoped>
+.pitchAndScore {
   display: flex;
   justify-content: center;
   align-items: center;
   align-content: space-between;
 }
-.resultTable {
+.pitchAndScore_resultTable {
   padding-right: 30px;
   padding-left: 30px;
 }
 
-button {
-  outline: none;
-  border: 0;
-  padding: 10px 15px;
-  border-radius: 25px;
-  font-size: 15px;
-  margin: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.7;
-}
-
-button.primary {
-  background-color: #3498db;
-  color: white;
-  position: relative;
-
-  width: 80px;
-  height: 50px;
-  font-size: 25px;
-  border-radius: 15px;
-}
-
-button.secondary {
-  background-color: #34495e;
-  position: relative;
-  color: white;
-  width: 100px;
-  height: 50px;
-  font-size: 25px;
-  border-radius: 15px;
-}
 .restartScreen {
   display: flex;
   align-items: column;
@@ -222,6 +154,8 @@ button.secondary {
   display: table;
   align-items: column;
   justify-content: center;
+  padding: 0px;
+  margin: 0px;
 }
 .topHeader {
   display: flex;
@@ -240,7 +174,11 @@ button.secondary {
   padding: 10px;
 }
 .header__horseComp {
-  opacity: 0.5;
+  padding: 10px;
+  max-width: 60px;
+}
+.header__horseComp2 {
+  transform: scale(-1, 1);
   padding: 10px;
   max-width: 60px;
 }
@@ -249,6 +187,22 @@ button.secondary {
   position: relative;
 }
 .header_button {
+  display: flex;
+  flex-direction: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+.primary {
   position: relative;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+.secondary {
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
 </style>

@@ -41,7 +41,8 @@ ul {
   padding: 0px;
   margin-top: 0px;
   margin-right: 60px;
-
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   height: 450px;
 
   text-align: center;
@@ -59,7 +60,7 @@ ul {
   text-align: center;
   justify-content: center;
   align-items: center;
-  font-size: 20px;
+  /* font-size: 20px; */
   margin-top: 0px;
   border-right: 5px solid black;
   border-right: 5px solid black;

@@ -5,14 +5,12 @@ import BronzeMedalComp from "@/components/Medals/BronzeMedalComp.vue";
 const props = defineProps(["liveScore", "globalScorePool"]);
 </script>
 <template>
-  <!-- <td v-for="(horse,index) in props.liveScore " :key="index"> {{index +1}}. {{horse.name}}</td> -->
-  <div style="overflow-x: auto">
-    <div class="header">
-      <!-- <h1  > 7">Result Score</h1> -->
+  <div class="liveScoreTable">
+    <div class="liveScoreTable__header">
       <h1>Live Score</h1>
     </div>
 
-    <table class="table">
+    <table>
       <thead>
         <tr>
           <td>
@@ -28,6 +26,7 @@ const props = defineProps(["liveScore", "globalScorePool"]);
       </thead>
       <tr v-for="(horse, index) in props.liveScore" :key="index">
         <td>
+          <!-- According to index, medal component demonstrate next to index for first three.  -->
           <span>{{ index + 1 }}</span>
           <template v-if="index + 1 === 1 && props.globalScorePool < 1065"
             ><GoldMedalComp class="goldMedal"></GoldMedalComp
@@ -74,13 +73,13 @@ const props = defineProps(["liveScore", "globalScorePool"]);
 }
 table {
   background-color: rgb(240, 229, 229);
-  display: table;
-  padding: 0 25px;
-  margin: 0 auto 20px auto;
+  display: block;
   width: 100%;
+  height: 100%;
   text-align: center;
   border-collapse: collapse;
-  border-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 table tr {
@@ -89,29 +88,32 @@ table tr {
   font-weight: 500;
   text-align: center;
   justify-content: center;
-  opacity: 0.6;
-  border-radius: 10px;
 }
 
 table td {
   border-bottom: 1px solid #b4b6bc;
-  margin-left: 0px;
   text-align: center;
-  height: 40px;
-  width: 250px;
-  border-radius: 10px;
+  height: 35.2px;
+  width: 200px;
 }
 table th {
   text-align: center;
 }
-.header {
+.liveScoreTable__header {
   background-color: rgb(240, 229, 229);
   height: 60px;
   display: flex;
   justify-content: center;
   text-align: center;
   align-items: center;
-  border-radius: 10px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+}
+.liveScoreTable {
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
 }
 h1 {
   margin: 0;
