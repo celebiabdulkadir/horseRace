@@ -2,16 +2,13 @@
 import { ref } from "vue";
 import data from "@/assets/data.json";
 import getRandomNumber from "@/composables/useRandom"; // getRandomNumber function is called from useRandom file. This Function generates random number between specific interval
-import CountDownComp from "@/components/CountDownComp.vue";
 import RacePitchComp from "@/components/RacePitchComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import ResultTableComp from "@/components/ResultTableComp.vue";
-import StartAreaComp from "@/components/StartAreaComp.vue";
-import FinishAreaComp from "@/components/FinishAreaComp.vue";
 import ResultPopupComp from "@/components/ResultPopupComp.vue";
 import HorseComp from "@/components/HorseComp.vue";
 const show = ref(false);
-const distance = 118;
+const distance = 80;
 const interval = ref(); // variable of setInterval Function
 const counter = ref();
 const horses = ref(structuredClone(data));
@@ -35,7 +32,7 @@ const start = () => {
 const startRace = () => {
   interval.value = setInterval(() => {
     // (1057 = (Initial globalScoreValue = 2000) - 8 * (distance = 118) + 1 )
-    if (globalScorePool.value < 1057) {
+    if (globalScorePool.value < 1361) {
       // 1057 yerine variable atanacak.
       show.value = true;
       clearInterval(interval.value);
@@ -92,7 +89,7 @@ const horseDistanceIncreaser = (index) => {
         <HorseComp :color="'#3d3d3d'" class="header__horseComp2"></HorseComp>
       </div>
       <div class="header__button">
-        <template v-if="globalScorePool > 1065">
+        <template v-if="globalScorePool > 1361">
           <ButtonComp
             class="primary"
             @start="start"
@@ -111,17 +108,13 @@ const horseDistanceIncreaser = (index) => {
     </div>
     <!-- Race pitch whick includes starting area racepitch and finish area -->
     <div class="pitchAndScore">
-      <!-- CountDown component runs before start for 3 seconds -->
-      <CountDownComp v-if="counter > 0" :counter="counter"> </CountDownComp>
       <section>
         <div class="pitchAndScore_resultTable">
           <!-- ResultTableComp shows result sorted by their score instantly on the left side of screen -->
           <ResultTableComp :liveScore="liveScore"></ResultTableComp>
         </div>
       </section>
-      <StartAreaComp :horses="horses"></StartAreaComp>
-      <RacePitchComp :horses="horses"></RacePitchComp>
-      <FinishAreaComp :horses="horses"></FinishAreaComp>
+      <RacePitchComp :horses="horses" :counter="counter"></RacePitchComp>
     </div>
   </section>
   <!-- Shows results on ResultPopupComp -->
@@ -142,8 +135,11 @@ const horseDistanceIncreaser = (index) => {
   align-content: space-between;
 }
 .pitchAndScore_resultTable {
-  padding-right: 30px;
-  padding-left: 30px;
+  background-color: rgb(197, 216, 216);
+  position: relative;
+
+  margin: 30px;
+  border-radius: 10px;
 }
 
 .restartScreen {

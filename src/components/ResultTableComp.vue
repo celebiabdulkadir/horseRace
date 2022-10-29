@@ -28,13 +28,13 @@ const props = defineProps(["liveScore", "globalScorePool"]);
         <td>
           <!-- According to index, medal component demonstrate next to index for first three.  -->
           <span>{{ index + 1 }}</span>
-          <template v-if="index + 1 === 1 && props.globalScorePool < 1065"
+          <template v-if="index + 1 === 1 && props.globalScorePool < 1361"
             ><GoldMedalComp class="goldMedal"></GoldMedalComp
           ></template>
-          <template v-if="index + 1 === 2 && props.globalScorePool < 1065"
+          <template v-if="index + 1 === 2 && props.globalScorePool < 1361"
             ><SilverMedalComp class="silverMedal"></SilverMedalComp
           ></template>
-          <template v-if="index + 1 === 3 && props.globalScorePool < 1065"
+          <template v-if="index + 1 === 3 && props.globalScorePool < 1361"
             ><BronzeMedalComp class="bronzeMedal"></BronzeMedalComp
           ></template>
         </td>
@@ -72,7 +72,6 @@ const props = defineProps(["liveScore", "globalScorePool"]);
   vertical-align: middle;
 }
 table {
-  background-color: rgb(240, 229, 229);
   display: block;
   width: 100%;
   height: 100%;
@@ -99,7 +98,6 @@ table th {
   text-align: center;
 }
 .liveScoreTable__header {
-  background-color: rgb(240, 229, 229);
   height: 60px;
   display: flex;
   justify-content: center;

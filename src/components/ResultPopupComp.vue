@@ -74,32 +74,6 @@ const restartHandler = () => {
   display: flex;
   align-items: flex-end;
   justify-content: right;
-}
-
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
-
-.modal-body {
-  /* margin: 20px 0; */
-}
-
-.modal-default-button {
-  display: flex;
-}
-
-.modal-enter-from {
-  opacity: 0;
-}
-
-.modal-leave-to {
-  opacity: 0;
-}
-
-.modal-enter-from .modal-container,
-.modal-leave-to .modal-container {
-  -webkit-transform: scale(1.1);
-  transform: scale(1.1);
+  transition: 0.2s;
 }
 </style>
