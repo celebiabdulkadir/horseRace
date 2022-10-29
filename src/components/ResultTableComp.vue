@@ -5,9 +5,10 @@ import BronzeMedalComp from "@/components/Medals/BronzeMedalComp.vue";
 const props = defineProps(["liveScore", "globalScorePool"]);
 </script>
 <template>
-  <div class="liveScoreTable">
-    <div class="liveScoreTable__header">
-      <h1>Live Score</h1>
+  <div class="live-score-table">
+    <div class="live-score-table__header">
+      <h1 v-if="props.globalScorePool < 1361">Result Table</h1>
+      <h1 v-else>Live Score</h1>
     </div>
 
     <table>
@@ -17,7 +18,7 @@ const props = defineProps(["liveScore", "globalScorePool"]);
             <span><b>Order</b></span>
           </td>
           <td>
-            <span><b>Horse</b></span>
+            <span><b>Horse Name</b></span>
           </td>
           <td>
             <span><b>Lane</b></span>
@@ -29,13 +30,13 @@ const props = defineProps(["liveScore", "globalScorePool"]);
           <!-- According to index, medal component demonstrate next to index for first three.  -->
           <span>{{ index + 1 }}</span>
           <template v-if="index + 1 === 1 && props.globalScorePool < 1361"
-            ><GoldMedalComp class="goldMedal"></GoldMedalComp
+            ><GoldMedalComp class="gold-medal"></GoldMedalComp
           ></template>
           <template v-if="index + 1 === 2 && props.globalScorePool < 1361"
-            ><SilverMedalComp class="silverMedal"></SilverMedalComp
+            ><SilverMedalComp class="silver-medal"></SilverMedalComp
           ></template>
           <template v-if="index + 1 === 3 && props.globalScorePool < 1361"
-            ><BronzeMedalComp class="bronzeMedal"></BronzeMedalComp
+            ><BronzeMedalComp class="bronze-medal"></BronzeMedalComp
           ></template>
         </td>
         <td>
@@ -50,21 +51,21 @@ const props = defineProps(["liveScore", "globalScorePool"]);
 </template>
 
 <style lang="scss" scoped>
-.bronzeMedal {
+.bronze-medal {
   display: inline-flex;
   max-width: 30px;
   max-height: 30px;
   align-self: center;
   vertical-align: middle;
 }
-.silverMedal {
+.silver-medal {
   display: inline-flex;
   max-width: 30px;
   max-height: 30px;
   align-self: center;
   vertical-align: middle;
 }
-.goldMedal {
+.gold-medal {
   display: inline-flex;
   max-width: 30px;
   max-height: 30px;
@@ -97,7 +98,16 @@ table td {
 table th {
   text-align: center;
 }
-.liveScoreTable__header {
+.live-score-table {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+.live-score-table__header {
   height: 60px;
   display: flex;
   justify-content: center;
@@ -106,12 +116,7 @@ table th {
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
 }
-.liveScoreTable {
-  height: 100%;
-  width: 100%;
-  padding: 0px;
-  margin: 0px;
-}
+
 h1 {
   margin: 0;
 }

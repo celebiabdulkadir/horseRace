@@ -136,8 +136,8 @@ body {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 300%;
-    height: 300%;
+    width: 200%;
+    height: 200%;
     transform-origin: 0 0;
 
     @for $i from 1 through $numOfColBlocks {

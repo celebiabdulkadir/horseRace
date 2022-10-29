@@ -1,27 +1,33 @@
 <script setup>
 import HorseComp from "@/components/HorseComp.vue";
-import CountdownComp from "./CountdownComp.vue";
-const props = defineProps(["horses", "counter"]);
+import CountdownComp from "@/components/CountdownComp.vue";
+const props = defineProps([
+  "horses",
+  "counter",
+  "globalScorePool",
+  "scoreLimit",
+]);
 </script>
 <template>
-  <div class="pitchArea">
+  <div class="pitch-area">
     <div class="countdown">
       <CountdownComp v-if="props.counter > 0"></CountdownComp>
     </div>
-    <h1 class="startingGateTitle">STARTING GATE</h1>
     <ul>
+      <h1 class="starting-gate-title">STARTING GATE</h1>
       <li v-for="(horse, index) in props.horses" :key="index">
-        <span class="horseTitle">{{ index + 1 }} #{{ horse.name }}</span>
+        <span class="lane-number">{{ index + 1 }}</span>
+        <span class="horse-name"> #{{ horse.name }} </span>
         <span
-          class="horse"
+          class="horse-icon"
           :style="{
             left: horse.distance > 80 ? 80 + '%' : horse.distance + '%',
           }"
           ><HorseComp :color="horse.color"> </HorseComp>
         </span>
       </li>
+      <h1 class="end-gate-title">FINISH LINE</h1>
     </ul>
-    <h1 class="endGateTitle">FINISH LINE</h1>
   </div>
 </template>
 <style scoped>
@@ -45,48 +51,57 @@ ul li {
   height: 35.2px;
 }
 
-.horse {
+.horse-icon {
   width: 50px;
   height: 50px;
-  display: inline-table;
+  display: inline-block;
   margin-left: 90px;
   position: absolute;
-  top: 10px;
+  top: 6px;
   transition: all 0.3s;
-  z-index: 2;
+  z-index: 4;
+}
+.lane-number {
+  color: #fefeff;
+  font-size: xx-large;
+}
+.horse-name {
+  color: #dcdde1;
+  font-size: small;
 }
 
-.startingGateTitle {
+.starting-gate-title {
   position: absolute;
-  text-align: center;
   writing-mode: vertical-rl;
   text-orientation: upright;
-  top: 32%;
+  top: 0%;
   padding: 0px;
   height: 450px;
-  right: 760px;
-  width: 2%;
+  right: 720px;
+  width: 3%;
   margin-top: 0px;
-  border-right: 5px solid black;
-  border-left: 5px solid black;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
   background-color: rgb(203, 72, 36);
+  color: #ffffffa3;
   z-index: 1;
 }
-.endGateTitle {
+.end-gate-title {
   position: absolute;
   text-align: center;
   writing-mode: vertical-rl;
   text-orientation: upright;
   padding: 0px;
   height: 450px;
-  right: 127px;
-  top: 32%;
-  width: 2%;
+  right: 77px;
+  top: 0%;
+  width: 3%;
   margin-top: 0px;
-  border-right: 5px solid black;
-  border-left: 5px solid black;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
   background-color: rgb(28, 99, 9);
-  z-index: 1;
+  color: #ffffffa3;
+  z-index: 2;
 }
 .countdown {
   position: absolute;
@@ -94,7 +109,8 @@ ul li {
   right: 33%;
   z-index: 3;
 }
-.pitchArea {
+.pitch-area {
   padding-right: 30px;
+  display: flex;
 }
 </style>

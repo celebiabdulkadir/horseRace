@@ -14,6 +14,7 @@ const counter = ref();
 const horses = ref(structuredClone(data));
 const liveScore = ref(horses.value);
 const globalScorePool = ref(2000);
+const scoreLimit = 1361; // (1361 = (Initial globalScoreValue = 2000) - 8 * (distance = 80) + 1 )
 
 const close = () => {
   show.value = false;
@@ -31,17 +32,18 @@ const start = () => {
 // startRace set an interval in order to increase distance by random and implement race conditions
 const startRace = () => {
   interval.value = setInterval(() => {
-    // (1057 = (Initial globalScoreValue = 2000) - 8 * (distance = 118) + 1 )
-    if (globalScorePool.value < 1361) {
+    horses.value.forEach((item, index) => {
+      if (item.score < distance) horseDistanceIncreaser(index);
+    });
+    if (globalScorePool.value < scoreLimit) {
       // 1057 yerine variable atanacak.
       show.value = true;
       clearInterval(interval.value);
       interval.value = 0;
+
       console.log("showtrue");
     }
-    horses.value.forEach((item, index) => {
-      if (item.score < distance) horseDistanceIncreaser(index);
-    });
+
     sortHorses();
   }, 20);
 };
@@ -53,7 +55,7 @@ const sortHorses = () => {
   liveScore.value = horseScoreList;
   return horseScoreList;
 };
-// restart funtion restart the game
+// restart function restart the game
 const restart = () => {
   show.value = false;
   clearInterval(interval.value);
@@ -61,7 +63,6 @@ const restart = () => {
   horses.value = structuredClone(data);
   liveScore.value = horses.value;
   globalScorePool.value = 2000;
-
   start();
 };
 //horseDistanceIncreaser function increases the distance by random
@@ -82,14 +83,14 @@ const horseDistanceIncreaser = (index) => {
 <template>
   <section>
     <!-- Header that shown at the top of screen -->
-    <div class="topHeader">
+    <div class="top-header">
       <div class="header">
-        <HorseComp class="header__horseComp" :color="'#3d3d3d'"></HorseComp>
+        <HorseComp class="header__horsecomp" :color="'#3d3d3d'"></HorseComp>
         <h1 class="header__title">HORSE RACING</h1>
-        <HorseComp :color="'#3d3d3d'" class="header__horseComp2"></HorseComp>
+        <HorseComp :color="'#3d3d3d'" class="header__horsecomp2"></HorseComp>
       </div>
       <div class="header__button">
-        <template v-if="globalScorePool > 1361">
+        <template v-if="globalScorePool > scoreLimit">
           <ButtonComp
             class="primary"
             @start="start"
@@ -107,13 +108,15 @@ const horseDistanceIncreaser = (index) => {
       </div>
     </div>
     <!-- Race pitch whick includes starting area racepitch and finish area -->
-    <div class="pitchAndScore">
-      <section>
-        <div class="pitchAndScore_resultTable">
-          <!-- ResultTableComp shows result sorted by their score instantly on the left side of screen -->
-          <ResultTableComp :liveScore="liveScore"></ResultTableComp>
-        </div>
-      </section>
+    <div class="pitch-and-score">
+      <!-- <div class="countdown">
+        <CountdownComp v-if="counter > 0"></CountdownComp>
+      </div> -->
+      <div class="pitch-and-score_result-table">
+        <!-- ResultTableComp shows result sorted by their score instantly on the left side of screen -->
+        <ResultTableComp :liveScore="liveScore"></ResultTableComp>
+      </div>
+
       <RacePitchComp :horses="horses" :counter="counter"></RacePitchComp>
     </div>
   </section>
@@ -128,39 +131,30 @@ const horseDistanceIncreaser = (index) => {
 </template>
 
 <style scoped>
-.pitchAndScore {
+.pitch-and-score {
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   align-content: space-between;
 }
-.pitchAndScore_resultTable {
-  background-color: rgb(197, 216, 216);
+.pitch-and-score_result-table {
+  background-color: rgb(255, 255, 255);
   position: relative;
 
   margin: 30px;
   border-radius: 10px;
 }
 
-.restartScreen {
-  display: flex;
-  align-items: column;
-  justify-content: center;
-}
-.resultTableandWinner {
-  display: table;
-  align-items: column;
-  justify-content: center;
-  padding: 0px;
-  margin: 0px;
-}
-.topHeader {
+.top-header {
   display: flex;
   flex-direction: column;
   justify-content: center;
   position: relative;
   padding-left: 10px;
   padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 30px;
 }
 
 .header {
@@ -170,11 +164,11 @@ const horseDistanceIncreaser = (index) => {
   justify-content: center;
   padding: 10px;
 }
-.header__horseComp {
+.header__horsecomp {
   padding: 10px;
   max-width: 60px;
 }
-.header__horseComp2 {
+.header__horsecomp2 {
   transform: scale(-1, 1);
   padding: 10px;
   max-width: 60px;
@@ -183,13 +177,10 @@ const horseDistanceIncreaser = (index) => {
   font-size: 35px;
   position: relative;
 }
-.header_button {
-  display: flex;
-  flex-direction: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
+.header__button {
+  padding-bottom: 30px;
 }
+
 .primary {
   position: relative;
   justify-content: center;

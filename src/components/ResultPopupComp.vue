@@ -17,8 +17,12 @@ const restartHandler = () => {
     <div v-if="props.show" class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
-          <div class="closeIcon">
-            <ButtonComp @start="closeHandler" title="X"></ButtonComp>
+          <div class="close-icon">
+            <ButtonComp
+              @start="closeHandler"
+              title="X"
+              class="close-button"
+            ></ButtonComp>
           </div>
           <div class="modal-body">
             <ResultTableComp
@@ -28,7 +32,13 @@ const restartHandler = () => {
           </div>
 
           <div class="modal-footer">
-            <ButtonComp @start="restartHandler" title="Restart"></ButtonComp>
+            <ButtonComp
+              @start="restartHandler"
+              title="Restart"
+              class="restart-button"
+            >
+              ></ButtonComp
+            >
           </div>
         </div>
       </div>
@@ -36,6 +46,15 @@ const restartHandler = () => {
   </Transition>
 </template>
 <style scoped>
+.restart-button {
+  background-color: #34495e;
+  color: white;
+}
+.close-button {
+  background-color: white;
+  font-size: larger;
+  border-radius: 10px;
+}
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -68,12 +87,12 @@ const restartHandler = () => {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 15px;
 }
-.closeIcon {
-  border-radius: 10px;
+.close-icon {
   display: flex;
   align-items: flex-end;
   justify-content: right;
-  transition: 0.2s;
+  background-color: #fff;
 }
 </style>
