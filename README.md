@@ -26,7 +26,7 @@ The product will be made available not only on web browsers, but also on mobile 
 ### You can experience  live version of the product by clicking the netlify link below.
 
 
-### Netlify link : [realtimehorserace.netlify.app](realtimehorserace.netlify.app)
+### Netlify link : [realtimehorserace.netlify.app](https://realtimehorserace.netlify.app)
 
 
 
