@@ -14,12 +14,14 @@ const counter = ref();
 const horses = ref(structuredClone(data));
 const liveScore = ref(horses.value);
 const globalScorePool = ref(2000);
+const isClicked = ref(false);
 const scoreLimit = ref(1361); // (1361 = (Initial globalScoreValue = 2000) - 8 * (distance = 80) + 1 )
 // close function close the ResultPopupComp.
 const close = () => {
   show.value = false;
 };
 const start = () => {
+  isClicked.value = true;
   counter.value = 3; // in order to set 3 seconds.
   const interval2 = setInterval(() => {
     counter.value--;
@@ -36,6 +38,7 @@ const startRace = () => {
       if (item.score < distance) horseDistanceIncreaser(index);
     });
     if (globalScorePool.value < scoreLimit.value) {
+      isClicked.value = false;
       show.value = true;
       clearInterval(interval.value);
       interval.value = 0;
@@ -98,7 +101,7 @@ const horseDistanceIncreaser = (index) => {
           <ButtonComp
             class="primary"
             @start="start"
-            :disabled="interval || globalScorePool < 2000"
+            :disabled="isClicked"
             title="Start"
           ></ButtonComp>
         </template>
