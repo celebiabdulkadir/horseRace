@@ -1,22 +1,24 @@
 <script setup>
-const props = defineProps(["liveScore"]);
+import GoldMedalComp from "@/components/Medals/GoldMedalComp.vue";
+import SilverMedalComp from "@/components/Medals/SilverMedalComp.vue";
+import BronzeMedalComp from "@/components/Medals/BronzeMedalComp.vue";
+const props = defineProps(["liveScore", "globalScorePool", "scoreLimit"]);
 </script>
 <template>
-  <!-- <td v-for="(horse,index) in props.liveScore " :key="index"> {{index +1}}. {{horse.name}}</td> -->
-  <div style="overflow-x: auto">
-    <div class="header">
-      <!-- <h1  > 7">Result Score</h1> -->
-      <h1>Live Score</h1>
+  <div class="live-score-table">
+    <div class="live-score-table__header">
+      <h1 v-if="props.globalScorePool < props.scoreLimit">Result Table</h1>
+      <h1 v-else>Live Score</h1>
     </div>
 
-    <table class="table">
+    <table>
       <thead>
         <tr>
           <td>
             <span><b>Order</b></span>
           </td>
           <td>
-            <span><b>Horse</b></span>
+            <span><b>Horse Name</b></span>
           </td>
           <td>
             <span><b>Lane</b></span>
@@ -25,7 +27,20 @@ const props = defineProps(["liveScore"]);
       </thead>
       <tr v-for="(horse, index) in props.liveScore" :key="index">
         <td>
+          <!-- According to index, medal component demonstrate next to index for first three.  -->
           <span>{{ index + 1 }}</span>
+          <template
+            v-if="index + 1 === 1 && props.globalScorePool < props.scoreLimit"
+            ><GoldMedalComp class="gold-medal"></GoldMedalComp
+          ></template>
+          <template
+            v-if="index + 1 === 2 && props.globalScorePool < props.scoreLimit"
+            ><SilverMedalComp class="silver-medal"></SilverMedalComp
+          ></template>
+          <template
+            v-if="index + 1 === 3 && props.globalScorePool < props.scoreLimit"
+            ><BronzeMedalComp class="bronze-medal"></BronzeMedalComp
+          ></template>
         </td>
         <td>
           <span>{{ horse.name }}</span>
@@ -38,54 +53,74 @@ const props = defineProps(["liveScore"]);
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
+.bronze-medal {
+  display: inline-flex;
+  max-width: 30px;
+  max-height: 30px;
+  align-self: center;
+  vertical-align: middle;
+}
+.silver-medal {
+  display: inline-flex;
+  max-width: 30px;
+  max-height: 30px;
+  align-self: center;
+  vertical-align: middle;
+}
+.gold-medal {
+  display: inline-flex;
+  max-width: 30px;
+  max-height: 30px;
+  align-self: center;
+  vertical-align: middle;
+}
 table {
-  background-color: white;
-  display: table;
-  padding: 0 25px;
-  margin: 0 auto 20px auto;
+  display: block;
   width: 100%;
+  height: 100%;
   text-align: center;
   border-collapse: collapse;
-
-  box-shadow: rgb(108 105 108 / 20%) 0 2px 2px, rgb(108 105 108 / 20%) 0 4px 4px,
-    rgb(108 105 108 / 20%) 0 8px 8px, rgb(108 105 108 / 20%) 0 16px 16px,
-    rgb(108 105 108 / 20%) 0 32px 32px, rgb(108 105 108 / 20%) 0 64px 64px;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 table tr {
-  position: flex;
   border-bottom: 1px solid #dcdde1;
-  padding: 10px 5px;
-  font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: 500;
   text-align: center;
-  opacity: 0.6;
+  justify-content: center;
 }
 
 table td {
-  border: 1px solid #b4b6bc;
-  margin-left: 10px;
+  border-bottom: 1px solid #b4b6bc;
   text-align: center;
-  height: 40px;
-  width: 250px;
+  height: 35.2px;
+  width: 200px;
 }
 table th {
   text-align: center;
 }
-.header {
-  background-color: white;
+.live-score-table {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding: 0px;
+  margin: 0px;
+}
+.live-score-table__header {
   height: 60px;
   display: flex;
   justify-content: center;
   text-align: center;
   align-items: center;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
 }
+
 h1 {
   margin: 0;
 }
-//  span{
-//     background-color: rgb(95, 168, 95);
-//     border-radius: 5px;
-//  }
 </style>

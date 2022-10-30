@@ -1,56 +1,45 @@
 <script setup>
 import HorseComp from "@/components/HorseComp.vue";
-const props = defineProps(["horses"]);
+import CountdownComp from "@/components/CountdownComp.vue";
+const props = defineProps([
+  "horses",
+  "counter",
+  "globalScorePool",
+  "scoreLimit",
+]);
 </script>
 <template>
-  <div>
+  <div class="pitch-area">
+    <div class="countdown">
+      <CountdownComp v-if="props.counter > 0"></CountdownComp>
+    </div>
     <ul>
-      <li
-        v-for="(horse, index) in props.horses"
-        :key="index"
-        :style="{ color: horse.color }"
-      >
-        <!-- <span> Lane -{{ index + 1 }} #{{ horse.name }} </span> -->
+      <h1 class="starting-gate-title">STARTING GATE</h1>
+      <li v-for="(horse, index) in props.horses" :key="index">
+        <span class="lane-number">{{ index + 1 }}</span>
+        <span class="horse-name"> #{{ horse.name }} </span>
         <span
-          class="horse"
+          class="horse-icon"
           :style="{
-            left: horse.distance > 117 ? 117 + '%' : horse.distance + '%',
+            left: horse.distance > 80 ? 80 + '%' : horse.distance + '%',
           }"
           ><HorseComp :color="horse.color"> </HorseComp>
         </span>
       </li>
+      <h1 class="end-gate-title">FINISH LINE</h1>
     </ul>
   </div>
 </template>
 <style scoped>
-.line {
-  width: 10px;
-}
-.table {
-  margin-right: 60px;
-}
-
-table td {
-  position: relative;
-  border-bottom: 1px dashed black;
-  text-align: center;
-  font-family: Georgia, "Times New Roman", Times, serif;
-  font-weight: 500;
-  height: 65px;
-}
-
 ul {
   background-color: rgb(95, 168, 95);
   display: table;
+  position: relative;
   list-style: none;
-
   padding: 0 0px;
-  margin: 66px 0px auto 0px;
-  width: 750px;
-  /* opacity: 0.8; */
-  box-shadow: rgb(108 105 108 / 20%) 0 2px 2px, rgb(108 105 108 / 20%) 0 4px 4px,
-    rgb(108 105 108 / 20%) 0 8px 8px, rgb(108 105 108 / 20%) 0 16px 16px,
-    rgb(108 105 108 / 20%) 0 32px 32px, rgb(108 105 108 / 20%) 0 64px 64px;
+  margin: 0px 0px auto 0px;
+  width: 920px;
+  border-radius: 10px;
 }
 
 ul li {
@@ -58,22 +47,70 @@ ul li {
   border-bottom: 1px dashed #dcdde1;
   text-align: left;
   padding: 10px 5px;
-  font-family: Georgia, "Times New Roman", Times, serif;
   font-weight: 500;
-  height: 50px;
+  height: 35.2px;
 }
 
-ul li span {
-  /* opacity: 0.7; */
-  margin-left: 0px;
-}
-.horse {
+.horse-icon {
   width: 50px;
   height: 50px;
-  display: inline-table;
-  margin-left: -90px;
+  display: inline-block;
+  margin-left: 90px;
   position: absolute;
-  top: 15px;
+  top: 6px;
   transition: all 0.3s;
+  z-index: 4;
+}
+.lane-number {
+  color: #fefeff;
+  font-size: xx-large;
+}
+.horse-name {
+  color: #dcdde1;
+  font-size: small;
+}
+
+.starting-gate-title {
+  position: absolute;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  top: 0%;
+  padding: 0px;
+  height: 450px;
+  right: 720px;
+  width: 3%;
+  margin-top: 0px;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  background-color: rgb(203, 72, 36);
+  color: #ffffffa3;
+  z-index: 1;
+}
+.end-gate-title {
+  position: absolute;
+  text-align: center;
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  padding: 0px;
+  height: 450px;
+  right: 77px;
+  top: 0%;
+  width: 3%;
+  margin-top: 0px;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  background-color: rgb(28, 99, 9);
+  color: #ffffffa3;
+  z-index: 2;
+}
+.countdown {
+  position: absolute;
+  top: 60%;
+  right: 33%;
+  z-index: 3;
+}
+.pitch-area {
+  padding-right: 30px;
+  display: flex;
 }
 </style>
