@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import data from "@/assets/data.json";
-import getRandomNumber from "@/composables/useRandom"; // getRandomNumber function is called from useRandom file. This Function generates random number between specific interval
+import getRandomNumber from "@/composables/useRandom"; // getRandomNumber function is called from useRandom.js file. This Function generates random number between specific interval
 import RacePitchComp from "@/components/RacePitchComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
 import ResultTableComp from "@/components/ResultTableComp.vue";
@@ -15,12 +15,12 @@ const horses = ref(structuredClone(data));
 const liveScore = ref(horses.value);
 const globalScorePool = ref(2000);
 const scoreLimit = 1361; // (1361 = (Initial globalScoreValue = 2000) - 8 * (distance = 80) + 1 )
-
+// close function close the ResultPopupComp.
 const close = () => {
   show.value = false;
 };
 const start = () => {
-  counter.value = 3;
+  counter.value = 3; // in order to set 3 seconds.
   const interval2 = setInterval(() => {
     counter.value--;
     if (counter.value < 1) {
@@ -36,7 +36,6 @@ const startRace = () => {
       if (item.score < distance) horseDistanceIncreaser(index);
     });
     if (globalScorePool.value < scoreLimit) {
-      // 1057 yerine variable atanacak.
       show.value = true;
       clearInterval(interval.value);
       interval.value = 0;
@@ -67,14 +66,19 @@ const restart = () => {
 };
 //horseDistanceIncreaser function increases the distance by random
 const horseDistanceIncreaser = (index) => {
-  horses.value[index].distance += getRandomNumber();
-  horses.value[index].score = horses.value[index].distance;
+  horses.value[index].distance += getRandomNumber(); //   distance increases by adding random number
+  horses.value[index].score = horses.value[index].distance; // set score to distance
+
+  // Finish conditions.
   if (horses.value[index].distance > distance) {
+    // When a horse finishes the race , globalScorePool will be added to its score
     horses.value[index].score += globalScorePool.value;
+    // distance will be  substracted form globalScorePool
     globalScorePool.value -= distance;
-    console.log(globalScorePool.value);
+    // horse's distance is set to distance variable in order not to exceed finish line
     horses.value[index].distance = distance;
   } else {
+    // Standard Condition.
     horses.value[index].distance += getRandomNumber();
   }
 };
@@ -82,7 +86,7 @@ const horseDistanceIncreaser = (index) => {
 
 <template>
   <section>
-    <!-- Header that shown at the top of screen -->
+    <!-- Header that shown at the top of screen and includes buttons and header -->
     <div class="top-header">
       <div class="header">
         <HorseComp class="header__horsecomp" :color="'#3d3d3d'"></HorseComp>
@@ -112,11 +116,14 @@ const horseDistanceIncreaser = (index) => {
       <!-- <div class="countdown">
         <CountdownComp v-if="counter > 0"></CountdownComp>
       </div> -->
-      <div class="pitch-and-score_result-table">
+      <div class="pitch-and-score__score">
         <!-- ResultTableComp shows result sorted by their score instantly on the left side of screen -->
-        <ResultTableComp :liveScore="liveScore"></ResultTableComp>
+        <ResultTableComp
+          :liveScore="liveScore"
+          :scoreLimit="scoreLimit"
+          :globalScorePool="globalScorePool"
+        ></ResultTableComp>
       </div>
-
       <RacePitchComp :horses="horses" :counter="counter"></RacePitchComp>
     </div>
   </section>
@@ -138,7 +145,7 @@ const horseDistanceIncreaser = (index) => {
   align-items: center;
   align-content: space-between;
 }
-.pitch-and-score_result-table {
+.pitch-and-score__score {
   background-color: rgb(255, 255, 255);
   position: relative;
 

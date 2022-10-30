@@ -49,6 +49,7 @@ const restartHandler = () => {
 .restart-button {
   background-color: #34495e;
   color: white;
+  border-radius: 10px;
 }
 .close-button {
   background-color: white;

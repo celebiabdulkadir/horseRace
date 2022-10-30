@@ -2,12 +2,12 @@
 import GoldMedalComp from "@/components/Medals/GoldMedalComp.vue";
 import SilverMedalComp from "@/components/Medals/SilverMedalComp.vue";
 import BronzeMedalComp from "@/components/Medals/BronzeMedalComp.vue";
-const props = defineProps(["liveScore", "globalScorePool"]);
+const props = defineProps(["liveScore", "globalScorePool", "scoreLimit"]);
 </script>
 <template>
   <div class="live-score-table">
     <div class="live-score-table__header">
-      <h1 v-if="props.globalScorePool < 1361">Result Table</h1>
+      <h1 v-if="props.globalScorePool < props.scoreLimit">Result Table</h1>
       <h1 v-else>Live Score</h1>
     </div>
 
@@ -29,13 +29,16 @@ const props = defineProps(["liveScore", "globalScorePool"]);
         <td>
           <!-- According to index, medal component demonstrate next to index for first three.  -->
           <span>{{ index + 1 }}</span>
-          <template v-if="index + 1 === 1 && props.globalScorePool < 1361"
+          <template
+            v-if="index + 1 === 1 && props.globalScorePool < props.scoreLimit"
             ><GoldMedalComp class="gold-medal"></GoldMedalComp
           ></template>
-          <template v-if="index + 1 === 2 && props.globalScorePool < 1361"
+          <template
+            v-if="index + 1 === 2 && props.globalScorePool < props.scoreLimit"
             ><SilverMedalComp class="silver-medal"></SilverMedalComp
           ></template>
-          <template v-if="index + 1 === 3 && props.globalScorePool < 1361"
+          <template
+            v-if="index + 1 === 3 && props.globalScorePool < props.scoreLimit"
             ><BronzeMedalComp class="bronze-medal"></BronzeMedalComp
           ></template>
         </td>
@@ -50,7 +53,7 @@ const props = defineProps(["liveScore", "globalScorePool"]);
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style scoped>
 .bronze-medal {
   display: inline-flex;
   max-width: 30px;
