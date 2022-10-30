@@ -23,6 +23,14 @@ The product be developed to run on Opera and Firefox browsers.
 
 The product will be made available not only on web browsers, but also on mobile responsive and tablets.
 
+### You can experience  live version of the product by clicking the netlify link below.
+
+
+### Netlify link : [realtimehorserace.netlify.app](realtimehorserace.netlify.app)
+
+
+
+
 
 
 
