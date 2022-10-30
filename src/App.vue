@@ -14,7 +14,7 @@ const counter = ref();
 const horses = ref(structuredClone(data));
 const liveScore = ref(horses.value);
 const globalScorePool = ref(2000);
-const scoreLimit = 1361; // (1361 = (Initial globalScoreValue = 2000) - 8 * (distance = 80) + 1 )
+const scoreLimit = ref(1361); // (1361 = (Initial globalScoreValue = 2000) - 8 * (distance = 80) + 1 )
 // close function close the ResultPopupComp.
 const close = () => {
   show.value = false;
@@ -35,7 +35,7 @@ const startRace = () => {
     horses.value.forEach((item, index) => {
       if (item.score < distance) horseDistanceIncreaser(index);
     });
-    if (globalScorePool.value < scoreLimit) {
+    if (globalScorePool.value < scoreLimit.value) {
       show.value = true;
       clearInterval(interval.value);
       interval.value = 0;
@@ -120,8 +120,8 @@ const horseDistanceIncreaser = (index) => {
         <!-- ResultTableComp shows result sorted by their score instantly on the left side of screen -->
         <ResultTableComp
           :liveScore="liveScore"
-          :scoreLimit="scoreLimit"
           :globalScorePool="globalScorePool"
+          :scoreLimit="scoreLimit"
         ></ResultTableComp>
       </div>
       <RacePitchComp :horses="horses" :counter="counter"></RacePitchComp>
@@ -134,6 +134,7 @@ const horseDistanceIncreaser = (index) => {
     :show="show"
     :liveScore="liveScore"
     :globalScorePool="globalScorePool"
+    :scoreLimit="scoreLimit"
   ></ResultPopupComp>
 </template>
 

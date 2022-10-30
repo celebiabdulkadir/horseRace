@@ -1,7 +1,12 @@
 <script setup>
 import ResultTableComp from "@/components/ResultTableComp.vue";
 import ButtonComp from "@/components/ButtonComp.vue";
-const props = defineProps(["show", "liveScore", "globalScorePool"]);
+const props = defineProps([
+  "show",
+  "liveScore",
+  "globalScorePool",
+  "scoreLimit",
+]);
 const emits = defineEmits(["close", "restart"]);
 
 const closeHandler = () => {
@@ -28,6 +33,7 @@ const restartHandler = () => {
             <ResultTableComp
               :liveScore="props.liveScore"
               :globalScorePool="props.globalScorePool"
+              :scoreLimit="props.scoreLimit"
             ></ResultTableComp>
           </div>
 
